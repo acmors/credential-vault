@@ -1,6 +1,6 @@
 package com.credentialvault.web.mapper;
 import com.credentialvault.domain.UserAccount;
-import com.credentialvault.web.dto.ResponseUserAccount;
+import com.credentialvault.web.dto.user.ResponseUserAccount;
 
 public class MapperUserAccount {
 

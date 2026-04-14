@@ -1,14 +1,13 @@
-package com.credentialvault.web.dto;
+package com.credentialvault.web.dto.user;
 
-public class CreateUserAccount {
+public class UpdateUserEmailAndUsername {
+
     private String username;
     private String email;
-    private String password;
 
-    public CreateUserAccount(String username, String email, String password) {
+    public UpdateUserEmailAndUsername(String username, String email) {
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
     public String getUsername() {
@@ -25,13 +24,5 @@ public class CreateUserAccount {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

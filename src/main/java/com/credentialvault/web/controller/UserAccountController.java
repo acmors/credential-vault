@@ -1,8 +1,8 @@
 package com.credentialvault.web.controller;
 
 import com.credentialvault.service.UserAccountService;
-import com.credentialvault.web.dto.CreateUserAccount;
-import com.credentialvault.web.dto.ResponseUserAccount;
+import com.credentialvault.web.dto.user.CreateUserAccount;
+import com.credentialvault.web.dto.user.ResponseUserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,6 +3,7 @@ package com.credentialvault.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -19,6 +20,9 @@ public class UserAccount {
     private String password;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Credential> credentials;
 
     public UserAccount() {
     }
