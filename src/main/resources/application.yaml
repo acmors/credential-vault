@@ -1,3 +1,10 @@
 spring:
   application:
-    name: Credential-Vault
+    name: Credential-Vaultspring
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: pass
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
