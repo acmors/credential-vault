@@ -1,4 +1,7 @@
 spring:
+  app:
+    token:
+      secret-key: ${JWT_SECRET_KEY:Y29mcmUtZGUtc2VuaGFzLWFwaS1kZXBsb3k=}
   application:
     name: Credential-Vaultspring
   datasource:
