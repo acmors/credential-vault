@@ -2,20 +2,20 @@ package com.credentialvault.web.dto.login;
 
 public class Auth {
 
-    private String login;
+    private String email;
     private String password;
 
-    public Auth(String login, String password) {
-        this.login = login;
+    public Auth(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

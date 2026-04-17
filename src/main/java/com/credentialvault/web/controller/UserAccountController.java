@@ -6,10 +6,11 @@ import com.credentialvault.web.dto.user.ResponseUserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/users")
 public class UserAccountController {
 
     @Autowired
@@ -21,6 +22,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE') AND (#id == authentication.principal.id)")
     public ResponseEntity<ResponseUserAccount> findByEmail(@PathVariable String email){
         return ResponseEntity.ok().body(service.findByEmail(email));
     }

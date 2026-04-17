@@ -8,14 +8,20 @@ import com.credentialvault.web.dto.user.UpdateUserEmailAndUsername;
 import com.credentialvault.web.dto.user.UpdateUserPassword;
 import com.credentialvault.web.mapper.MapperUserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserAccountService {
 
     @Autowired
     private UserAccountRepository repository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Transactional
     public ResponseUserAccount createUserAccount(CreateUserAccount createUser){
@@ -26,7 +32,9 @@ public class UserAccountService {
 
         user.setUsername(createUser.getUsername());
         user.setEmail(createUser.getEmail());
-        user.setPassword(createUser.getPassword());
+        user.setRole(UserAccount.Role.ROLE_CLIENTE);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setPassword(encoder.encode(createUser.getPassword()));
 
         var saved = repository.save(user);
         return MapperUserAccount.toDTO(saved);
@@ -42,7 +50,7 @@ public class UserAccountService {
         user.setEmail(update.getEmail());
 
         var saved = repository.save(user);
-        return MapperUserAccount.toDTO(user);
+        return MapperUserAccount.toDTO(saved);
     }
 
     @Transactional
@@ -52,7 +60,7 @@ public class UserAccountService {
         if(!password.getCurrentPassword().equals(user.getPassword())) throw new RuntimeException("Password is wrong.");
         if(!password.getNewPassword().equals(password.getConfirmPassword())) throw new RuntimeException("Password dont match.");
 
-        user.setPassword(password.getNewPassword());
+        user.setPassword(encoder.encode(password.getNewPassword()));
         var saved = repository.save(user);
 
         return MapperUserAccount.toDTO(saved);
@@ -72,7 +80,14 @@ public class UserAccountService {
         return MapperUserAccount.toDTO(user);
     }
 
+    @Transactional
+    public UserAccount.Role findRoleByUsername(String email){
+        return repository.findRoleByEmail(email);
+    }
+
     public boolean existsByEmail(String email){
         return repository.existsByEmail(email);
     }
+
+
 }

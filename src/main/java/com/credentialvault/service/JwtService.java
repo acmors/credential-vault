@@ -35,7 +35,7 @@ public class JwtService {
                 .builder()
                 .claims(data)
                 .expiration(generateExpirestAt())
-                .signWith()
+                .signWith(generateSign())
                 .compact();
     }
 
