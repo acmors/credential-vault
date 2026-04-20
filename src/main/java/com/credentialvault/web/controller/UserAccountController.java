@@ -21,10 +21,4 @@ public class UserAccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createUserAccount(createUserAccount));
     }
 
-    @GetMapping("/{email}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE') AND (#id == authentication.principal.id)")
-    public ResponseEntity<ResponseUserAccount> findByEmail(@PathVariable String email){
-        return ResponseEntity.ok().body(service.findByEmail(email));
-    }
-
 }

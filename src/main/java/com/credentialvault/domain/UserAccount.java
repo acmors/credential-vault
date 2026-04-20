@@ -23,6 +23,7 @@ public class UserAccount {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     private LocalDateTime createdAt;
@@ -34,6 +35,6 @@ public class UserAccount {
     }
 
     public enum Role {
-        ROLE_ADMIN, ROLE_CLIENTE
+        ADMIN, CLIENTE
     }
 }

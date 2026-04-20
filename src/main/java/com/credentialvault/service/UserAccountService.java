@@ -19,7 +19,6 @@ public class UserAccountService {
 
     @Autowired
     private UserAccountRepository repository;
-
     @Autowired
     private PasswordEncoder encoder;
 
@@ -32,7 +31,7 @@ public class UserAccountService {
 
         user.setUsername(createUser.getUsername());
         user.setEmail(createUser.getEmail());
-        user.setRole(UserAccount.Role.ROLE_CLIENTE);
+        user.setRole(UserAccount.Role.CLIENTE);
         user.setCreatedAt(LocalDateTime.now());
         user.setPassword(encoder.encode(createUser.getPassword()));
 

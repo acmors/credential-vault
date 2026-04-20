@@ -4,7 +4,7 @@ public class CreateCredential {
 
     private String site;
     private String login;
-    private String encryptedPassword;
+        private String encryptedPassword;
 
     public CreateCredential(String site, String login, String encryptedPassword) {
         this.site = site;

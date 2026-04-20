@@ -19,3 +19,15 @@ spring:
 app:
   token:
     secret-key: ${JWT_SECRET_KEY:Y29mcmUtZGUtc2VuaGFzLWFwaS1kZXBsb3k=}
+
+jwt:
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
