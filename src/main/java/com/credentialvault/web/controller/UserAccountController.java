@@ -3,6 +3,7 @@ package com.credentialvault.web.controller;
 import com.credentialvault.service.UserAccountService;
 import com.credentialvault.web.dto.user.CreateUserAccount;
 import com.credentialvault.web.dto.user.ResponseUserAccount;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class UserAccountController {
     private UserAccountService service;
 
     @PostMapping
-    public ResponseEntity<ResponseUserAccount> createUserAccount(@RequestBody CreateUserAccount createUserAccount){
+    public ResponseEntity<ResponseUserAccount> createUserAccount(@RequestBody @Valid CreateUserAccount createUserAccount){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createUserAccount(createUserAccount));
     }
 

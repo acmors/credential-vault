@@ -1,10 +1,17 @@
 package com.credentialvault.web.dto.credential;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CreateCredential {
 
+    @NotBlank
     private String site;
+
+    @NotBlank
     private String login;
-        private String encryptedPassword;
+
+    @NotBlank
+    private String encryptedPassword;
 
     public CreateCredential(String site, String login, String encryptedPassword) {
         this.site = site;

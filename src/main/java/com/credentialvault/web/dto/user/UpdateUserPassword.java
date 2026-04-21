@@ -1,38 +1,28 @@
 package com.credentialvault.web.dto.user;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateUserPassword {
 
+    @NotBlank
+    @Size(min = 5, max = 12, message = "Password must be in 5 and 12 characters.")
     private String currentPassword;
+
+    @NotBlank
+    @Size(min = 5, max = 12, message = "Password must be in 5 and 12 characters.")
     private String newPassword;
+
+    @NotBlank
+    @Size(min = 5, max = 12, message = "Password must be in 5 and 12 characters.")
     private String confirmPassword;
 
-    public UpdateUserPassword(String currentPassword, String newPassword, String confirmPassword) {
-        this.currentPassword = currentPassword;
-        this.newPassword = newPassword;
-        this.confirmPassword = confirmPassword;
-    }
-
-    public String getCurrentPassword() {
-        return currentPassword;
-    }
-
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
 }

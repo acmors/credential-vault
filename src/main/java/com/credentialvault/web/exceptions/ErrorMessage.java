@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @ToString
@@ -18,14 +19,14 @@ public class ErrorMessage {
     private String method;
     private int status;
     private String statusText;
-    private String message;
+    private Object message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
 
     public ErrorMessage() {
     }
 
-    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message) {
+    public ErrorMessage(HttpServletRequest request, HttpStatus status, Object message) {
         this.path = request.getRequestURI();
         this.method = request.getMethod();
         this.status = status.value();
@@ -33,7 +34,7 @@ public class ErrorMessage {
         this.message = message;
     }
 
-    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message, BindingResult result) {
+    public ErrorMessage(HttpServletRequest request, HttpStatus status, Object message, BindingResult result) {
         this.path = request.getRequestURI();
         this.method = request.getMethod();
         this.status = status.value();
