@@ -1,11 +1,10 @@
 package com.credentialvault.web.controller;
 
-import com.credentialvault.auth.AuthenticationService;
+import com.credentialvault.service.AuthenticationService;
 import com.credentialvault.web.dto.login.LoginRequest;
 import com.credentialvault.web.dto.login.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

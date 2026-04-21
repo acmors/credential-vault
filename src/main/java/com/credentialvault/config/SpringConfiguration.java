@@ -1,7 +1,5 @@
 package com.credentialvault.config;
 
-import com.credentialvault.security.CustomUserDetailsService;
-import com.credentialvault.service.UserAccountService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -49,7 +46,6 @@ public class SpringConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(HttpMethod.POST, "/auth").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll();
-                    authorize.requestMatchers("/api/v1/credential/**").permitAll();
                     authorize.requestMatchers("/h2-console/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })

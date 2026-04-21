@@ -1,4 +1,4 @@
-package com.credentialvault.auth;
+package com.credentialvault.security;
 
 import com.credentialvault.domain.UserAccount;
 import lombok.RequiredArgsConstructor;

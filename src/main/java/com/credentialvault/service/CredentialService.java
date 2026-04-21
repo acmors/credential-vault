@@ -27,8 +27,8 @@ public class CredentialService {
     @Transactional
     public ResponseCredential createCredential(CreateCredential dto, String email){
         UserAccount user = userAccountService.findByEmailEntity(email);
-
         Credential credential = new Credential();
+
         credential.setSite(dto.getSite());
         credential.setLogin(dto.getLogin());
         credential.setEncryptedPassword(dto.getEncryptedPassword());
@@ -39,17 +39,10 @@ public class CredentialService {
         return MapperCredential.toDto(created);
     }
 
-    @Transactional(readOnly = true)
-    public List<ResponseCredential> findAllCredentials(){
-        return repository.findAll()
-                .stream()
-                .map(MapperCredential::toDto)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
-    public ResponseCredential updateCredentials(UpdateCredential update){
-        Credential credential = new Credential();
+    public ResponseCredential updateCredential(Long id, UpdateCredential update, String email){
+        Credential credential =findById(id);
+        validateOwner(credential, email);
 
         credential.setSite(update.getSite());
         credential.setLogin(update.getLogin());
@@ -73,6 +66,20 @@ public class CredentialService {
                 .stream()
                 .map(MapperCredential::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public void deleteCredential(Long id, String email){
+        Credential credential = findById(id);
+        validateOwner(credential, email);
+
+        repository.delete(credential);
+    }
+
+    private void validateOwner(Credential credential, String email){
+        if (credential.getUser() == null ||!credential.getUser().getEmail().equals(email)){
+            throw new RuntimeException("Access denied.");
+        }
     }
 }
 
