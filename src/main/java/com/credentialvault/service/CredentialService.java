@@ -1,11 +1,14 @@
 package com.credentialvault.service;
 import com.credentialvault.domain.Credential;
 import com.credentialvault.domain.UserAccount;
+import com.credentialvault.exceptions.AccessDeniedException;
+import com.credentialvault.exceptions.ResourceNotFoundException;
 import com.credentialvault.repository.CredentialRepository;
 import com.credentialvault.web.dto.credential.CreateCredential;
 import com.credentialvault.web.dto.credential.ResponseCredential;
 import com.credentialvault.web.dto.credential.UpdateCredential;
 import com.credentialvault.web.mapper.MapperCredential;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CredentialService {
 
-    @Autowired
-    private CredentialRepository repository;
-
-    @Autowired
-    private UserAccountService userAccountService;
+    private final CredentialRepository repository;
+    private final UserAccountService userAccountService;
+    private final CryptoService cryptoService;
+    private final MapperCredential mapperCredential;
 
     @Transactional
     public ResponseCredential createCredential(CreateCredential dto, String email){
@@ -28,12 +31,12 @@ public class CredentialService {
 
         credential.setSite(dto.getSite());
         credential.setLogin(dto.getLogin());
-        credential.setEncryptedPassword(dto.getEncryptedPassword());
+        credential.setEncryptedPassword(cryptoService.encryptPassword(dto.getEncryptedPassword()));
         credential.setCreatedAt(LocalDateTime.now());
         credential.setUser(user);
 
         var created = repository.save(credential);
-        return MapperCredential.toDto(created);
+        return mapperCredential.toDto(created);
     }
 
     @Transactional
@@ -47,13 +50,13 @@ public class CredentialService {
         credential.setUpdatedAt(LocalDateTime.now());
 
         var created = repository.save(credential);
-        return MapperCredential.toDto(created);
+        return mapperCredential.toDto(created);
     }
 
     @Transactional(readOnly = true)
     public Credential findById(Long id){
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
     }
 
     @Transactional(readOnly = true)
@@ -61,7 +64,7 @@ public class CredentialService {
         UserAccount user = userAccountService.findByEmailEntity(email);
         return repository.findAllByUser(user)
                 .stream()
-                .map(MapperCredential::toDto)
+                .map(mapperCredential::toDto)
                 .toList();
     }
 
@@ -75,7 +78,7 @@ public class CredentialService {
 
     private void validateOwner(Credential credential, String email){
         if (credential.getUser() == null ||!credential.getUser().getEmail().equals(email)){
-            throw new RuntimeException("Access denied.");
+            throw new AccessDeniedException("Access denied.");
         }
     }
 }

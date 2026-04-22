@@ -1,5 +1,4 @@
 package com.credentialvault.jwt;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

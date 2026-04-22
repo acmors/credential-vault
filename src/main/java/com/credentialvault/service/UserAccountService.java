@@ -1,6 +1,9 @@
 package com.credentialvault.service;
 
 import com.credentialvault.domain.UserAccount;
+import com.credentialvault.exceptions.BadRequestException;
+import com.credentialvault.exceptions.EmailAlreadyExistsException;
+import com.credentialvault.exceptions.ResourceNotFoundException;
 import com.credentialvault.repository.UserAccountRepository;
 import com.credentialvault.web.dto.user.CreateUserAccount;
 import com.credentialvault.web.dto.user.ResponseUserAccount;
@@ -26,7 +29,7 @@ public class UserAccountService {
     public ResponseUserAccount createUserAccount(CreateUserAccount createUser){
         UserAccount user = new UserAccount();
         if (existsByEmail(createUser.getEmail())){
-            throw new RuntimeException("Email already exists!");
+            throw new EmailAlreadyExistsException("Email already exists!");
         }
 
         user.setUsername(createUser.getUsername());
@@ -43,7 +46,7 @@ public class UserAccountService {
     @Transactional
     public ResponseUserAccount updateUserEmailAndUsername(UpdateUserEmailAndUsername update, String email){
         UserAccount user = findByEmailEntity(email);
-        if (existsByEmail(update.getEmail())) throw new RuntimeException("Email already exists!");
+        if (existsByEmail(update.getEmail())) throw new EmailAlreadyExistsException("Email already exists!");
 
         user.setUsername(update.getUsername());
         user.setEmail(update.getEmail());
@@ -56,8 +59,8 @@ public class UserAccountService {
     public ResponseUserAccount updateUserPassword(UpdateUserPassword password, String email){
         UserAccount user = findByEmailEntity(email);
 
-        if(!password.getCurrentPassword().equals(user.getPassword())) throw new RuntimeException("Password is wrong.");
-        if(!password.getNewPassword().equals(password.getConfirmPassword())) throw new RuntimeException("Password dont match.");
+        if(!password.getCurrentPassword().equals(user.getPassword())) throw new BadRequestException("Password is wrong.");
+        if(!password.getNewPassword().equals(password.getConfirmPassword())) throw new BadRequestException("Password dont match.");
 
         user.setPassword(encoder.encode(password.getNewPassword()));
         var saved = repository.save(user);
@@ -65,14 +68,12 @@ public class UserAccountService {
         return MapperUserAccount.toDTO(saved);
     }
 
-    //para consultas internas sem necessidade de DTO
     @Transactional(readOnly = true)
     public UserAccount findByEmailEntity(String email){
         return repository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
     }
 
-    //para consultas externas com necessidade de DTO
     @Transactional(readOnly = true)
     public ResponseUserAccount findByEmail(String email){
         UserAccount user = findByEmailEntity(email);

@@ -1,6 +1,7 @@
 package com.credentialvault.service;
 
 import com.credentialvault.domain.UserAccount;
+import com.credentialvault.exceptions.BadRequestException;
 import com.credentialvault.jwt.JwtService;
 import com.credentialvault.web.dto.login.LoginRequest;
 import com.credentialvault.web.dto.login.LoginResponse;
@@ -26,7 +27,7 @@ public class AuthenticationService {
         UserAccount user = accountService.findByEmailEntity(login.getEmail());
 
         if (!encoder.matches(login.getPassword(), user.getPassword())){
-            throw new RuntimeException("wrong password");
+            throw new BadRequestException("wrong password");
         }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

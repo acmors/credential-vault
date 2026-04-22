@@ -2,6 +2,7 @@ package com.credentialvault.web.exceptions;
 
 import com.credentialvault.exceptions.AccessDeniedException;
 import com.credentialvault.exceptions.BadRequestException;
+import com.credentialvault.exceptions.EmailAlreadyExistsException;
 import com.credentialvault.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,14 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.FORBIDDEN,ex.getMessage()));
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> emailAlreadyExistsException(EmailAlreadyExistsException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT,ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

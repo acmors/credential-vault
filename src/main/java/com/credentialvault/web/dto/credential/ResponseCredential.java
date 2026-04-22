@@ -13,6 +13,6 @@ public class ResponseCredential {
 
     private String site;
     private String login;
-    private String encryptedPassword;
+    private String password;
 
 }
