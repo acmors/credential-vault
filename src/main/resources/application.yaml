@@ -30,4 +30,10 @@ logging:
   level:
     org:
       springframework:
-        security: TRACE
+        security: DEBUG
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always
