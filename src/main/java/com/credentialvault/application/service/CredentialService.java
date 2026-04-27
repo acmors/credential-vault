@@ -9,6 +9,8 @@ import com.credentialvault.application.dto.credential.ResponseCredential;
 import com.credentialvault.application.dto.credential.UpdateCredential;
 import com.credentialvault.common.mapper.MapperCredential;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -46,7 +48,7 @@ public class CredentialService {
 
         credential.setSite(update.getSite());
         credential.setLogin(update.getLogin());
-        credential.setEncryptedPassword(update.getEncryptedPassword());
+        credential.setEncryptedPassword(cryptoService.encryptPassword(update.getEncryptedPassword()));
         credential.setUpdatedAt(LocalDateTime.now());
 
         var created = repository.save(credential);
@@ -60,12 +62,11 @@ public class CredentialService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseCredential> findAllCredentialsByUser(String email){
+    public Page<ResponseCredential> findAllCredentialsByUser(String email, Pageable pageable){
         UserAccount user = userAccountService.findByEmailEntity(email);
-        return repository.findAllByUser(user)
-                .stream()
-                .map(mapperCredential::toDto)
-                .toList();
+        return repository
+                .findAllByUser(user, pageable)
+                .map(mapperCredential::toDto);
     }
 
     @Transactional

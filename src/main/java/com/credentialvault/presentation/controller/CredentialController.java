@@ -4,6 +4,8 @@ import com.credentialvault.application.dto.credential.CreateCredential;
 import com.credentialvault.application.dto.credential.ResponseCredential;
 import com.credentialvault.application.dto.credential.UpdateCredential;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,8 +34,8 @@ public class CredentialController {
     }
 
     @GetMapping("/credentials")
-    public ResponseEntity<List<ResponseCredential>> getMyCredentials(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<Page<ResponseCredential>> getMyCredentials(@AuthenticationPrincipal Jwt jwt, Pageable pageable) {
         String email = jwt.getSubject();
-        return ResponseEntity.ok(service.findAllCredentialsByUser(email));
+        return ResponseEntity.ok(service.findAllCredentialsByUser(email, pageable));
     }
 }
