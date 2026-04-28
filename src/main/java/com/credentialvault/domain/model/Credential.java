@@ -1,5 +1,6 @@
 package com.credentialvault.domain.model;
 
+import com.credentialvault.application.dto.credential.ResponseCredential;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,7 @@ public class Credential {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     public Long getId() {
         return id;

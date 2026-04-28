@@ -1,4 +1,4 @@
-create table tb_user(
+create table tb_credential(
     id bigserial primary key,
     username varchar(255),
     site varchar(255),

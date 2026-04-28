@@ -1,16 +1,17 @@
 package com.credentialvault.application.dto.credential;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class CreateCredential {
 
-    @NotBlank
     private String site;
 
     @NotBlank
+    @Email(message = "Email format invalid.")
     private String login;
 
-
+    @NotBlank
     private String encryptedPassword;
 
     public CreateCredential(String site, String login, String encryptedPassword) {
