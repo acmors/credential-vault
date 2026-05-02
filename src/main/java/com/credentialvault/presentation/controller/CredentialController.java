@@ -3,6 +3,7 @@ import com.credentialvault.application.service.CredentialService;
 import com.credentialvault.application.dto.credential.CreateCredential;
 import com.credentialvault.application.dto.credential.ResponseCredential;
 import com.credentialvault.application.dto.credential.UpdateCredential;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/credential")
+@RequiredArgsConstructor
 public class CredentialController {
 
-    @Autowired
-    private CredentialService service;
+
+    private final CredentialService service;
 
     @PostMapping
     public ResponseEntity<ResponseCredential> createCredential(@RequestBody CreateCredential dto, @AuthenticationPrincipal Jwt jwt){

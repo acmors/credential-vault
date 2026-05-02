@@ -15,4 +15,6 @@ public class ResponseCredential {
     private String login;
     private String password;
 
+    public ResponseCredential(String github, String mail) {
+    }
 }

@@ -43,7 +43,7 @@ public class CredentialService {
 
     @Transactional
     public ResponseCredential updateCredential(Long id, UpdateCredential update, String email){
-        Credential credential =findById(id);
+        Credential credential = findById(id);
         credentialValidation.validateOwner(credential, email);
 
         credential.setSite(update.getSite());
