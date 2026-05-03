@@ -5,7 +5,9 @@ import com.credentialvault.application.dto.user.ResponseUserAccount;
 import com.credentialvault.application.dto.user.UpdateUserEmailAndUsername;
 import com.credentialvault.application.dto.user.UpdateUserPassword;
 import com.credentialvault.application.service.validation.UserValidation;
+import com.credentialvault.common.exceptions.business.BadRequestException;
 import com.credentialvault.common.exceptions.business.EmailAlreadyExistsException;
+import com.credentialvault.common.exceptions.business.ResourceNotFoundException;
 import com.credentialvault.domain.model.UserAccount;
 import com.credentialvault.infra.repository.UserAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserAccountServiceTest {
@@ -103,6 +107,83 @@ class UserAccountServiceTest {
         assertThrows(EmailAlreadyExistsException.class, ()->
             service.createUserAccount(request)
         );
+    }
+
+    @Test
+    @DisplayName("Should update a username and email successfully")
+    void shouldUpdateUsernameAndEmailSuccessfully(){
+
+        String email = "userTest@gmail.com";
+
+        when(repository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+
+        when(repository.save(user))
+                .thenReturn(user);
+
+        ResponseUserAccount result = service.updateUserEmailAndUsername(updateEmailAndUsername, email);
+
+        assertNotNull(result);
+        assertEquals("User Test", user.getUsername());
+        assertEquals("userTestado@gmail.com", user.getEmail());
+    }
+
+    @Test
+    @DisplayName("Shouldnt update when user dont exists")
+    void shouldntUpdateUsernameAndEmailWhenUserDontExists(){
+
+        String email = "Test@gmail.com";
+
+        when(repository.findByEmail(email))
+                .thenThrow(new ResourceNotFoundException("User not found. May do not registered"));
+
+        assertThrows(ResourceNotFoundException.class, ()->
+            service.updateUserEmailAndUsername(updateEmailAndUsername, email)
+        );
+    }
+
+    @Test
+    @DisplayName("Should update password successfully")
+    void shouldUpdatePasswordSuccessfully(){
+
+        String email = "userTest@gmail.com";
+
+        when(repository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+
+        when(encoder.matches(updatePassword.getCurrentPassword(), user.getPassword()))
+                .thenReturn(true);
+
+        when(encoder.encode(updatePassword.getNewPassword()))
+                .thenReturn("newEncodedPassword");
+
+        when(repository.save(user))
+                .thenReturn(user);
+
+        ResponseUserAccount result = service.updateUserPassword(updatePassword, email);
+
+        assertNotNull(result);
+        assertEquals("newEncodedPassword", user.getPassword());
+
+    }
+
+    @Test
+    @DisplayName("Shouldn update password when current ir wrong")
+    void shouldntUpdatePasswordWhenCurrentPasswordIsWrong(){
+
+        String email = "userTest@gmail.com";
+        updatePassword.setCurrentPassword("234567891");
+
+        when(repository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+
+        when(encoder.matches(updatePassword.getCurrentPassword(), user.getPassword()))
+                .thenReturn(false);
+
+        assertThrows(BadRequestException.class, ()->
+            service.updateUserPassword(updatePassword, email)
+        );
+
     }
 
 }
