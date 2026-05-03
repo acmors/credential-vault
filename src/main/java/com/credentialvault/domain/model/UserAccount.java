@@ -1,7 +1,9 @@
 package com.credentialvault.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "tb_user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserAccount {
 
     @Id
@@ -31,7 +35,12 @@ public class UserAccount {
     @OneToMany(mappedBy = "user")
     private List<Credential> credentials;
 
-    public UserAccount() {
+    public UserAccount(Long id, String username, String email, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public enum Role {

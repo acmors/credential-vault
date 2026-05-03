@@ -1,5 +1,6 @@
 package com.credentialvault.common.mapper;
 
+import com.credentialvault.application.dto.credential.CreateCredential;
 import com.credentialvault.domain.model.Credential;
 import com.credentialvault.application.service.CryptoService;
 import com.credentialvault.application.dto.credential.ResponseCredential;
@@ -17,6 +18,14 @@ public class MapperCredential {
                 credential.getSite(),
                 credential.getLogin(),
                 cryptoService.decryptPassword(credential.getEncryptedPassword())
+        );
+    }
+
+    public Credential toEntity(CreateCredential request){
+        return new Credential(
+                request.getSite(),
+                request.getLogin(),
+                request.getEncryptedPassword()
         );
     }
 }

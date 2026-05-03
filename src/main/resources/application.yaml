@@ -12,9 +12,13 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1
 
 app:
   token:

@@ -13,6 +13,6 @@ import lombok.Setter;
 public class ResponseUserAccount {
 
     private String username;
-    private String password;
+    private String email;
 
 }

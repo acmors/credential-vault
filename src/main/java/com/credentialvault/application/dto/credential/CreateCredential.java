@@ -2,7 +2,9 @@ package com.credentialvault.application.dto.credential;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
+@Builder
 public class CreateCredential {
 
     private String site;
@@ -13,6 +15,8 @@ public class CreateCredential {
 
     @NotBlank
     private String encryptedPassword;
+
+    public CreateCredential(){}
 
     public CreateCredential(String site, String login, String encryptedPassword) {
         this.site = site;
