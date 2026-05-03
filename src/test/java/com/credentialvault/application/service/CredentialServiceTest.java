@@ -198,7 +198,7 @@ class CredentialServiceTest {
     }
 
     @Test
-    @DisplayName("Shoul delete a credential successfully.")
+    @DisplayName("Shouldnt delete a credential successfully.")
     void shouldntDeleteWhenCredentialDontExists(){
         Long credentialId = 2L;
         String email = "userTest@email.com";

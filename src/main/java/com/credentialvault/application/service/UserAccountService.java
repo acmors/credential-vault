@@ -56,7 +56,7 @@ public class UserAccountService {
     public ResponseUserAccount updateUserPassword(UpdateUserPassword password, String email){
         UserAccount user = findByEmailEntity(email);
 
-        if(!password.getCurrentPassword().equals(user.getPassword())) throw new BadRequestException("Password is wrong.");
+        if (!encoder.matches(password.getCurrentPassword(), user.getPassword())) throw new BadRequestException("Password is wrong.");
         if(!password.getNewPassword().equals(password.getConfirmPassword())) throw new BadRequestException("Password dont match.");
 
         user.setPassword(encoder.encode(password.getNewPassword()));
