@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,9 +57,9 @@ class CredentialServiceTest {
         user = new UserAccount(
                 1L,
                 "UserTest",
-                "userTest@email.com",
+                "userTest@gmail.com",
                 "123456789",
-                UserAccount.Role.CLIENTE.name()
+                UserAccount.Role.CLIENTE
         );
         request = new CreateCredential(
                 "Github",

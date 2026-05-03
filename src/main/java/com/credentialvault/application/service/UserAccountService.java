@@ -2,7 +2,6 @@ package com.credentialvault.application.service;
 
 import com.credentialvault.domain.model.UserAccount;
 import com.credentialvault.common.exceptions.business.BadRequestException;
-import com.credentialvault.common.exceptions.business.EmailAlreadyExistsException;
 import com.credentialvault.common.exceptions.business.ResourceNotFoundException;
 import com.credentialvault.application.service.validation.UserValidation;
 import com.credentialvault.infra.repository.UserAccountRepository;
@@ -15,13 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
-
 
     private final UserAccountRepository repository;
     private final PasswordEncoder encoder;

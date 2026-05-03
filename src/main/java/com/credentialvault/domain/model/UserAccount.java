@@ -35,7 +35,12 @@ public class UserAccount {
     @OneToMany(mappedBy = "user")
     private List<Credential> credentials;
 
-    public UserAccount(long l, String userTest, String mail, String number, String name) {
+    public UserAccount(Long id, String username, String email, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public enum Role {
